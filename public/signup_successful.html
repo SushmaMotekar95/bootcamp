@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Razorpay Checkout</title>
+   <link rel="stylesheet" href="signup_successful.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head> 
+<body>
+    <div class = "signup_section">
+        <div class="signup_info">
+            <div class="signup_title">
+                <h2>Signup Successfully</h2>
+            </div>
+             <div class="signup_details">
+                <div>
+                <p>Name : <span id="userName"></span></p>
+                <p>Email : <span id="userEmail"></span></p>
+                <p>Mobile : <span id="userNumber"></span></p>
+                </div>
+             </div>
+             <div class="Home-btn">
+                <button  id="rzp-button1" class="goToHome-btn">Payment</button>
+             </div>
+        </div>
+    <script>
+        /*function goToHome() {
+            window.location.href = "index.html";
+        }*/
+
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Retrieve query parameters
+        const userName = getQueryParam("name");
+        const userEmail = getQueryParam("email");
+        const userNumber = getQueryParam("Number");
+        
+
+        // Display values in console
+        console.log("Name:", userName);
+        console.log("Email:", userEmail);
+        console.log("Number:", userNumber);
+
+        // Set retrieved values to HTML elements
+        document.getElementById("userName").textContent = userName;
+        document.getElementById("userEmail").textContent = userEmail;
+        document.getElementById("userNumber").textContent = userNumber;
+    </script>
+    
+   
+<!--<button id="rzp-button1" class="btn btn-outline-dark btn-lg"><i class="fas fa-money-bill"></i> Own Checkout</button>-->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+  var options = {
+    "key": "rzp_test_PkAroegJjfGLPj", // Enter the Key ID generated from the Dashboard
+    "amount": "1000",
+    "currency": "INR",
+    "description": "Acme Corp",
+    "image": "https://s3.amazonaws.com/rzp-mobile/images/rzp.jpg",
+    "prefill":
+    {
+        "name": userName,
+        "email": userEmail,
+        "contact": userNumber,
+    },
+    config: {
+      display: {
+        blocks: {
+          utib: { //name for Axis block
+            name: "Pay using Axis Bank",
+            instruments: [
+              {
+                method: "card",
+                issuers: ["UTIB"]
+              },
+              {
+                method: "netbanking",
+                banks: ["UTIB"]
+              },
+            ]
+          },
+          other: { //  name for other block
+            name: "Other Payment modes",
+            instruments: [
+              {
+                method: "card",
+                issuers: ["ICIC"]
+              },
+              {
+                method: 'netbanking',
+              }
+            ]
+          }
+        },
+        hide: [
+          {
+          method: "upi"
+          }
+        ],
+        sequence: ["block.utib", "block.other"],
+        preferences: {
+          show_default_blocks: false // Should Checkout show its default blocks?
+        }
+      }
+    },
+   /* "handler": function (response) {
+      alert(response.razorpay_payment_id);
+    },*/
+    "handler": function (response) {
+    
+    // Extract user data
+    var name = getQueryParam("name");
+    var email = getQueryParam("email");
+    var Number = getQueryParam("Number");
+    var payment_Id = getQueryParam("payment_Id");
+   
+    // Make AJAX POST request to server to save data
+    $.ajax({
+        type: "POST",
+        url: "/payment_success",
+        data: {
+            name: name,
+            email: email,
+            Number: Number,
+            paymentId: response.razorpay_payment_id
+        },
+        success: function (data) {
+            console.log("Data saved successfully:", data);
+        },
+        error: function (error) {
+            console.error("Error saving data:", error);
+        }
+    });
+    alert("Payment successful!");
+ 
+
+    // Redirect user to signup_successful.html
+    window.location.href = "showdata.html";
+},
+    "modal": {
+      "ondismiss": function () {
+        if (confirm("Are you sure, you want to close the form?")) {
+          txt = "You pressed OK!";
+          console.log("Checkout form closed by the user");
+        } else {
+          txt = "You pressed Cancel!";
+          console.log("Complete the Payment")
+        }
+      }
+    }
+  };
+  var rzp1 = new Razorpay(options);
+  document.getElementById('rzp-button1').onclick = function (e) {
+    rzp1.open();
+    e.preventDefault();
+  }
+</script>
+
+</body>
+</html>
+

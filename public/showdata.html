@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>payment Details</title>
+    <link rel="stylesheet" href="signup_successful.css">
+</head>
+<body>
+    <div class = "signup_section">
+        <div class="signup_info">
+            <div class="signup_title">
+                 <img  class="sucessfull_img" src="images/successfull_img.png" height="120px" width="220px">
+                <h2 class="Payment">Payment Successfully</h2>
+            </div>
+            <!--<div class="signup_details">
+                <div>
+                <p>Name : <span id="userName"></span></p>
+                <p>Email : <span id="userEmail"></span></p>
+                <p>Mobile : <span id="userNumber"></span></p>
+                <p>Payment ID: <span id="paymentId"></span></p>
+
+                </div>
+             </div>-->
+             <div class="Home-btn">
+                <button  class="goToHome-btn" onclick="goToHome()">Go to Home</button>
+             </div>
+        </div>
+    <script>
+        function goToHome() {
+            window.location.href = "index.html";
+        }
+        
+
+        /*function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        // Retrieve query parameters
+        const userName = getQueryParam("name");
+        const userEmail = getQueryParam("email");
+        const userNumber = getQueryParam("Number");
+        const paymentId = getQueryParam("paymentId"); // Extract paymentId
+
+        // Display values in console
+        console.log("Name:", userName);
+        console.log("Email:", userEmail);
+        console.log("Number:", userNumber);
+        console.log("Payment ID:", paymentId); // Log paymentId
+
+        // Set retrieved values to HTML elements
+        document.getElementById("userName").textContent = userName;
+        document.getElementById("userEmail").textContent = userEmail;
+        document.getElementById("userNumber").textContent = userNumber;
+        document.getElementById("paymentId").textContent = paymentId; // Set paymentId to HTML*/
+</script>
+</body>
+</html>
